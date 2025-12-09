@@ -15,6 +15,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Index,
+    func,
 )
 from sqlalchemy.orm import relationship
 
@@ -35,7 +36,8 @@ class PowerData(Base):
         DateTime(timezone=False),
         nullable=False,
         primary_key=True,
-        default=datetime.utcnow
+        server_default=func.now(),
+        default=datetime.utcnow,
     )
 
     # 어느 장비(전력량계)에서 읽은 값인지 나타내는 외래 키.
