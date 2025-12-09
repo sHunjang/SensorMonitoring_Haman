@@ -94,3 +94,4 @@ class MainWindow(QMainWindow):
         단순히 목록을 다시 불러온다.
         """
         self.refresh_device_list()
+
