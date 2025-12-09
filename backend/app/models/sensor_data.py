@@ -20,6 +20,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
+from app.core.timezone import now_kst_naive
 
 
 class SensorData(Base):
@@ -37,7 +38,7 @@ class SensorData(Base):
         nullable=False,
         primary_key=True,
         server_default=func.now(),
-        default=datetime.utcnow,
+        default=now_kst_naive,
     )
 
     # 어느 장비에서 읽은 값인지 나타내는 외래 키.
