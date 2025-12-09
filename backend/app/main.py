@@ -14,7 +14,12 @@ from app.core.config import settings
 from app.core.logging import configure_logging
 from app.core.database import init_db
 from app.api.v1 import devices as devices_router
+from app.api.v1 import sensors as sensors_router
 
+# 더미 데이터 수집기
+from app.services.collector import DataCollector
+
+collector = DataCollector()
 
 # 로깅 설정을 우선 구성한다.
 configure_logging(settings.LOG_LEVEL)
@@ -38,10 +43,16 @@ def on_startup() -> None:
     logger.info("Application startup: initializing database")
     init_db()
     logger.info("Database initialized")
+    collector.start() # 데이터 수집기
+    
+@app.on_event("shutdown")
+def on_shutdown() -> None:
+    collector.stop()
 
 
 # 라우터 등록
 app.include_router(devices_router.router, prefix="/api/v1")
+app.include_router(sensors_router.router, prefix="/api/v1")
 
 
 @app.get("/health")

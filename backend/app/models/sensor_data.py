@@ -15,6 +15,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Index,
+    func
 )
 from sqlalchemy.orm import relationship
 
@@ -35,6 +36,8 @@ class SensorData(Base):
         DateTime(timezone=False),
         nullable=False,
         primary_key=True,
+        server_default=func.now(),
+        default=datetime.utcnow,
     )
 
     # 어느 장비에서 읽은 값인지 나타내는 외래 키.
@@ -78,6 +81,5 @@ class SensorData(Base):
         디버깅 시 사용하기 좋은 문자열 표현.
         """
         return (
-            f"<SensorData id={self.id} device_id={self.device_id} "
-            f"time={self.timestamp}>"
+            f"<SensorData device_id={self.device_id} time={self.timestamp}"
         )
